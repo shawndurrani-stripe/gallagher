@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" /><meta name="author" content="Dev Mukherjee" /><link rel="canonical" href="https://anomaly.github.io/gallagher/" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Gallagher Idiomatic client for Python</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Welcome to Gallagher Python";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = "/gallagher/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="." class="icon icon-home"> Gallagher Idiomatic client for Python
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href=".">Welcome to Gallagher Python</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#features">Features</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#developing-the-client">Developing the client</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#contributing-to-the-documentation">Contributing to the documentation</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="cli/">Command Line Interface</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="design/">Design</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="usage/">Usage</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">Gallagher Idiomatic client for Python</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Welcome to Gallagher Python</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/anomaly/gallagher/edit/master/docs/index.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="welcome-to-gallagher-python">Welcome to Gallagher Python</h1>
+<p>This project maintains an idiomatic client for Python. The project began as a requirement for us to reliably work with the Gallagher API. While Gallagher publish their <a href="https://gallaghersecurity.github.io/cc-rest-docs/ref/index.html">API reference</a> which is built from an OpenAPI spec with <a href="https://github.com/sourcey/spectacle">Spectacle</a> documentation generator flavours. The OpenAPI spec is maintained by hand and <a href="https://github.com/GallagherSecurity/cc-rest-docs/tree/master/swagger">can be found on Github</a>.</p>
+<p>Our assumption is that this is for security and technical reasons. In the spirit of building good quality software we embarked on building a Python idiomatic client with full test coverage.</p>
+<p>The API client draws inspiration from companies like <a href="https://stripe.com">Stripe</a> or projects like <a href="https://pydantic.dev">pyndatic</a> who are known for stellar developer experience. Our aim is to provide a similar quality of developer experience for Gallagher projects.</p>
+<p>The design pattern of the API client is opinionated from our experience as software engineers. We goto great lengths to document and justify our thought process so others can see where we are coming from.</p>
+<blockquote>
+<p><strong>Note:</strong> This project is not affiliated with Gallagher in any way.</p>
+</blockquote>
+<h2 id="features">Features</h2>
+<ul>
+<li>pydantic models for all API payloads</li>
+<li>HTTP transport using httpx</li>
+<li>Full test coverage</li>
+<li>A completely python based interface to interacting with Gallagher Command Centre</li>
+</ul>
+<h2 id="developing-the-client">Developing the client</h2>
+<p>This library uses <a href="https://www.python-httpx.org">httpx</a> as the HTTP transport and <a href="https://pydantic.dev">pydantic</a> to construct and ingest payloads. We use <a href="https://taskfile.dev">taskfile</a> to run tasks. Our test suite is setup using <code>pytest</code>.</p>
+<p>Anomaly has a demo Command Centre set up in the cloud that we run tests against. This is populate using a sample site configuration. There are no real security controllers connected to this instance. Upon a PR being lodged, Github actions is configured to run the entire test suite against our demo instance.</p>
+<p>To contribute to the library, please fork this repository and lodge a pull request for us to accept your changes.</p>
+<h2 id="contributing-to-the-documentation">Contributing to the documentation</h2>
+<p>The documentation is build using <a href="https://www.mkdocs.org">mkdocs</a> and hosted on <a href="https://anomaly.github.io/gallagher/">Github pages</a>. The project repository is configured to build and publish the documentation on every commit to the <code>master</code> branch.</p>
+<p>Some handy commands to get you started:</p>
+<ul>
+<li><code>mkdocs new [dir-name]</code> - Create a new project.</li>
+<li><code>mkdocs serve -a localhost:8003</code> - Start the live-reloading docs server, <code>-a</code> allows you to provide a custom address.</li>
+<li><code>mkdocs build</code> - Build the documentation site.</li>
+<li><code>mkdocs -h</code> - Print help message and exit.</li>
+</ul>
+<p>To start contributing please fork this repository, make the changes you desire and submit a pull request for us to merge your changes in. Alternatively consider <a href="https://github.com/anomaly/gallagher/discussions">starting a discussion</a> or <a href="https://github.com/anomaly/gallagher/issues">raising an issue</a>. Be kind to our maintainers and check to see if a similar discussion is already in place and join the thread.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="cli/" class="btn btn-neutral float-right" title="Command Line Interface">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/anomaly/gallagher/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+      <span><a href="cli/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.5.3
+Build Date UTC : 2024-03-27 22:07:29.165115+00:00
+-->

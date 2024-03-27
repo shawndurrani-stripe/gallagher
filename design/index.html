@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Dev Mukherjee" /><link rel="canonical" href="https://anomaly.github.io/gallagher/design/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Design - Gallagher Idiomatic client for Python</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Design";
+        var mkdocs_page_input_path = "design.md";
+        var mkdocs_page_url = "/gallagher/design/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Gallagher Idiomatic client for Python
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Welcome to Gallagher Python</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../cli/">Command Line Interface</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Design</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#data-transfer-objects">Data Transfer Objects</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#api-client-core">API Client Core</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#designing-endpoints">Designing Endpoints</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#layout">Layout</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../usage/">Usage</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Gallagher Idiomatic client for Python</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Design</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/anomaly/gallagher/edit/master/docs/design.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="design">Design</h1>
+<p>A central feature to this client is it's detailed design, focused on a superior developer experience and performance. We also ensure that we follow design patterns outlined by Gallagher</p>
+<h2 id="data-transfer-objects">Data Transfer Objects</h2>
+<p>This a central part of our design. There are three types of schema definitions, each one of them suffixed with their intent:</p>
+<ul>
+<li><strong>Ref</strong> are <code>References</code> to other objects, they using contain a <code>href</code> and possibly additional meta data such as a <code>name</code> or <code>id</code></li>
+<li><strong>Summary</strong> is what is returned by the Gallagher API in operations such as <a href="https://gallaghersecurity.github.io/cc-rest-docs/ref/cardholders.html">searches</a>, these are generally a subset of the full object</li>
+<li><strong>Detail</strong> are the full object found at a particular <code>href</code>, they compound on the <code>Summary</code> schema and add additional attributes</li>
+</ul>
+<p>I additional we have classes that defined responses which are suffixed with <strong>Response</strong>, these wrap structures which returns <code>hrefs</code> for <code>next</code> and <code>previous</code> responses and usually have a collection to hold the response.</p>
+<p>Ensure that each Endpoint defines their own DTOs so you can test them for authenticity. Avoid writing generic classes.</p>
+<p>While <code>Refs</code>, <code>Summary</code> and <code>Detail</code> responses have fields, and it would make sense from an efficiency point of view to inherit e.g <code>Summary</code> builds on <code>Ref</code>, this should be avoided so logically an instance of a <code>Ref</code> class doesn't assert true for <code>isinstance</code> of a <code>Summary</code> class.</p>
+<h2 id="api-client-core">API Client Core</h2>
+<p>The <code>core</code> package in <code>cc</code> provides two important classes:</p>
+<ul>
+<li><code>APIEndpoint</code> which all endpoint consumers configuration must inherit from</li>
+<li><code>EndpointConfig</code> an instance of which each class must return as a result of the <code>get_config</code> method</li>
+</ul>
+<p>Every Endpoint Consumer Class is expected to return an instance of <code>EndpointConfig</code> from the <code>get_config</code> method. Each configuration provides references to paths that are dynamically discovered as part of our bootstrapping process.</p>
+<p>Never hard code URLs as this violates the <a href="https://en.wikipedia.org/wiki/HATEOAS">HATEOAS</a> design principle.</p>
+<p>Additionally each configuration will provide references to DTO classes that is used to parse responses, and details of the body.</p>
+<pre><code>class Alarms(
+    APIEndpoint
+):
+    &quot;&quot;&quot; Alarms
+    &quot;&quot;&quot;
+
+    @classmethod
+    async def get_config(cls) -&gt; EndpointConfig:
+        return EndpointConfig(
+            endpoint=Capabilities.CURRENT.features.alarms.alarms,
+            dto_list=AlarmResponse,
+            dto_retrieve=AlarmZoneSummary,
+        )
+</code></pre>
+<p>The above example shows the <code>Alarms</code> class which is a consumer of the <code>alarms</code> endpoint. It nominates <code>AlarmResponse</code> as the class the infrastructure will use to parse <code>list</code> responses and <code>AlarmZoneSummary</code> as the class to parse <code>retrieve</code> responses.</p>
+<p>It references the <code>Capabilities.CURRENT</code> singleton which is a <code>Capabilities</code> instance that is bootstrapped at runtime. This is a singleton that is used to provide references to all endpoints.</p>
+<p>If a command centre does not have a certain capability then the objects are set to <code>None</code> and accessing the feature raises an exception (more on this in other sections).</p>
+<h3 id="designing-endpoints">Designing Endpoints</h3>
+<h2 id="layout">Layout</h2>
+<p>Layout of our files</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../cli/" class="btn btn-neutral float-left" title="Command Line Interface"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../usage/" class="btn btn-neutral float-right" title="Usage">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/anomaly/gallagher/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../cli/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../usage/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
