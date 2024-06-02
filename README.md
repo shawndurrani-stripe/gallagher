@@ -45,7 +45,7 @@ through to self recursive references with additional attributes:
 
 > Above examples have been taken from the Gallagher documentation
 
-Our `schemas` provide a set of `Mixins` that are used to construct the Models. These are repeatable patterns that need not be repeated. The typical patter would be to subclass from the `Mixins` e.g:
+Our `schemas` provide a set of `Mixins` that are used to construct the Models. These are repeatable patterns that need not be repeated. The typical pattern would be to subclass from the `Mixins` e.g:
 
 ```python
 from .utils import AppBaseModel, IdentityMixin, HrefMixin
