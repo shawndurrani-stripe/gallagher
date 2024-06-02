@@ -121,7 +121,7 @@ In this example the `AppGroupRef` has a `name` attribute which is not present in
 
 This API client primarily depends on the following libraries:
 
-- [httpx](https://www.python-httpx.org), fo transporting and parsing HTTP requests
+- [httpx](https://www.python-httpx.org), for transporting and parsing HTTP requests
 - [pydantic](https://pydantic.dev), for validating responses and constructing request bodies
 
 We use [Taskfile](https://taskfile.dev) to automate running tasks.
